@@ -1,0 +1,32 @@
+
+    int n,m;
+
+    void dfs(vector<vector<char>>& vec, int i, int j){
+        if(i<0 || i>=n || j<0 || j>=m || vec[i][j]=='0' || vec[i][j]=='#') return;
+
+        vec[i][j]='#';
+        
+        dfs(vec,i,j+1);
+        dfs(vec,i,j-1);
+        dfs(vec,i+1,j);
+        dfs(vec,i-1,j);
+
+    }
+
+    int numIslands(vector<vector<char>>& vec) {
+         n=vec.size();
+        m=vec[0].size();
+        int island=0;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(vec[i][j]=='1'){
+                    dfs(vec,i,j);
+                    island++;
+                }
+            }
+        }
+
+        return island;
+
+    }

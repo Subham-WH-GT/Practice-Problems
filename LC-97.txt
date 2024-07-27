@@ -33,3 +33,20 @@ rec+Memo
         memset(dp,-1,sizeof(dp));
         return solve(0,0,0,s1,s2,s3);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+qmjkzadivwjwdqonm
