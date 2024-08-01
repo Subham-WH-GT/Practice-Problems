@@ -1,0 +1,93 @@
+vector<int>vec;
+    
+    int n,m;
+    
+    
+    void left_solve(vector<vector<int> > &mat, int col, int row){
+        if(col>=m || mat[row][col] ==-1) return;
+        
+        else{
+            vec.push_back(mat[row][col]);
+            mat[row][col]=-1;
+            left_solve(mat,col+1,row);
+        }
+    }
+    
+    void top_solve(vector<vector<int> > &mat, int row, int col){
+        if(row>=n || mat[row][col] ==-1) return;
+        
+        else{
+            vec.push_back(mat[row][col]);
+            mat[row][col]=-1;
+            top_solve(mat,row+1,col);
+        }
+    }
+    
+    void right_solve(vector<vector<int> > &mat, int col, int row){
+        if(col<0 || mat[row][col] ==-1) return;
+        
+        else{
+            vec.push_back(mat[row][col]);
+            mat[row][col]=-1;
+            right_solve(mat,col-1,row);            
+        }
+    }
+    
+    
+    void down_solve(vector<vector<int> > &mat, int row, int col){
+        if(row<0 || mat[row][col] ==-1) return;
+        
+        else{
+            vec.push_back(mat[row][col]);
+            mat[row][col]=-1;
+            down_solve(mat,row-1,col);
+        }
+    }
+    
+    vector<int> spirallyTraverse(vector<vector<int> > &mat) {
+        // code here
+        bool left=true,top=false,right=false,down=false;
+        n=mat.size();
+        m=mat[0].size();
+        
+        int l=0,t=1,r=m-2,d=n-2,ll=0,tt=m-1,rr=n-1,dd=0;
+        
+        
+        while(vec.size()!= n*m ){
+            if(left){
+                left_solve(mat,l,ll);
+                left=false;
+                top=true;
+                l++;
+                ll++;
+            }
+            
+            else if(top){
+                top_solve(mat,t,tt);
+                top=false;
+                right=true;
+                t++;
+                tt--;
+                
+            }
+            
+            else if(right){
+                right_solve(mat,r,rr);
+                right=false;
+                down=true;
+                r--;
+                rr--;
+            }
+            
+            else if(down){
+                down_solve(mat,d,dd);
+                down=false;
+                left=true;
+                d--;
+                dd++;
+            }
+        }
+        
+        return vec;
+        
+    }
