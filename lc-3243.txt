@@ -1,0 +1,45 @@
+ vector<int> shortestDistanceAfterQueries(int n, vector<vector<int>>& q) {
+        vector<int> ans;
+        unordered_map<int,vector<int>>adj;
+
+        for(int i=0;i<n-1;i++){
+            adj[i].push_back(i+1);
+        }
+
+        for(int i=0;i<q.size();i++){
+            int start=q[i][0];
+            int end=q[i][1];
+
+            adj[start].push_back(end);
+
+            vector<int>result(n,INT_MAX);
+
+            priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+
+            result[0]=0;
+            pq.push({0,0});
+
+            while(!pq.empty()){
+                int dist=pq.top().first;
+                int node=pq.top().second;
+                pq.pop();
+
+                for(auto& vec:adj[node]){
+                    int adjnode=vec;
+                    int wt=1;
+
+                    if(dist+wt < result[adjnode]){
+                        result[adjnode]=dist+wt;
+                        pq.push({dist+wt,adjnode});
+                    }
+
+
+                }
+
+            }
+            ans.push_back(result[n-1]);
+        }
+
+        return ans;
+
+    }
