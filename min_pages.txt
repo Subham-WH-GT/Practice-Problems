@@ -1,0 +1,59 @@
+# Allocate Minimum Pages GFG-->
+
+
+ bool is_valid(int arr[], int n, int m, long long mid){
+        
+        int count=1;
+        int pages=0;
+        
+        for(int i=0;i<n;i++){
+            if(pages+arr[i]<=mid){
+                pages+=arr[i];
+            }
+            
+            else{
+                count++;
+                
+                if(count>m || arr[i]>mid) return false;
+                pages=arr[i];
+            }
+        }
+        
+        // if(count==m) return true;
+        
+        return true;
+    }
+    
+    long long findPages(int n, int arr[], int m) {
+        // code here
+        
+       if(m>n) return -1;
+       
+       long long  start=0;
+       long long  end=0;
+       
+       for(int i=0;i<n;i++){
+           
+           long long x=arr[i];
+           start=max(start,x);
+           end+=arr[i];
+       }
+       
+       long long result=-1;
+       while(start<=end){
+           
+           long long mid=start+(end-start)/2;
+           
+           if(is_valid(arr,n,m,mid)){
+              result=mid;
+              end=mid-1;
+           } 
+           
+           else{
+               start=mid+1;
+           }
+       }
+       
+       return result;
+        
+    }

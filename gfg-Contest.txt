@@ -1,0 +1,40 @@
+varient Operation:
+
+	 int countUniques(vector<int> a, int k, int l, int r) {
+        // code here
+        int ans=0;
+        unordered_map<int,int>m;
+        int cho=r-l+1;
+        for(int i=0;i<a.size();i++){
+            
+            if(a[i]>=l and a[i]<=r and m.find(a[i])==m.end()) cho--;
+            m[a[i]]++;
+            
+        }
+        
+        if(cho<=0) return m.size();
+        
+        for (const auto& pair : m) {
+            if(pair.second > 1){
+                int extra=pair.second-1;
+                
+                int to_c=min(cho,k);
+                if(extra <= to_c){
+                    cho=cho-extra;
+                    ans=ans+extra;
+                    k-=extra;
+                    
+                    if(cho==0 || k==0) return ans+m.size();
+                }
+                
+                else{
+                    ans+=to_c;
+                   cho=0;
+                   return ans+m.size();
+                }
+            }
+        }
+        
+        return ans+m.size();
+        
+    }
