@@ -1,0 +1,36 @@
+  ## Number of subarrays with maximum values in given range
+
+ long countSubarrays(int a[], int n, int L, int R)
+    {
+        // Complete the function
+        long answer=0;
+        int l=0;
+        int r=0;
+        int pehla_safe=l-1;
+        
+        while(r<n){
+            
+            int mai=a[r];
+            
+            if(mai>=L and mai<=R){
+                pehla_safe=r;
+                answer+=r-l+1;
+            }
+            
+            else if(mai<L){
+                answer+=pehla_safe-l+1;
+            }
+            
+            else{
+                l=r+1;
+                pehla_safe=l-1;
+                
+            }
+            
+            r++;
+            
+        }
+        
+        return answer;
+        
+    }

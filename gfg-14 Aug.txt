@@ -1,0 +1,38 @@
+# Longest common Substring !!!
+
+ int n,m;
+  int res=0;
+  int dp[1001][1001];
+  
+  int solve(string& s1, int i, string& s2, int j){
+      
+      if(i>=n || j>=m) return 0;
+      
+      if(dp[i][j] != -1)return dp[i][j];
+      
+      int ans=0;
+      
+      if(s1[i]==s2[j]){
+          ans=1+solve(s1,i+1,s2,j+1);
+      }
+      
+      
+          solve(s1,i+1,s2,j);
+          solve(s1,i,s2,j+1);
+      
+      
+      res=max(res,ans);
+      
+      return dp[i][j]= ans;
+  }
+  
+    int longestCommonSubstr(string s1, string s2) {
+        // your code here
+        n=s1.length();
+        m=s2.length();
+        
+        memset(dp,-1,sizeof(dp));
+        solve(s1,0,s2,0);
+         
+         return res;
+    }
