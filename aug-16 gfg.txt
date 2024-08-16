@@ -1,0 +1,73 @@
+Maximize The Cut Segments
+int dp[10001];
+    
+    int solve(int&n, int& x, int& y, int& z, int i){
+        
+        if(i>n) return INT_MIN;
+        
+        if(i==n) return 0;
+        
+        if(dp[i] != -1) return dp[i];
+        
+        int cut1=0,cut2=0,cut3=0;
+        
+        
+            cut1=1+solve(n,x,y,z,i+x);
+        
+        
+        
+            cut2=1+solve(n,x,y,z,i+y);
+        
+        
+        
+            cut3=1+solve(n,x,y,z,i+z);
+        
+        
+        return dp[i]= max({cut1,cut2,cut3});
+    }
+    
+    int maximizeTheCuts(int n, int x, int y, int z)
+    {
+        //Your code here
+        memset(dp,-1,sizeof(dp));
+        int ans=solve(n,x,y,z,0);
+        return (ans<0)?0:ans;
+    }
+
+
+
+************** BOTTOM_UP ******************
+
+
+
+ int maximizeTheCuts(int n, int x, int y, int z)
+    {
+        //Your code here
+        // memset(dp,-1,sizeof(dp));
+        // int ans=solve(n,x,y,z,0);
+        // return (ans<0)?0:ans;
+        
+        vector<int>dp(n+1,0);
+        
+        dp[n]=0; // n se n takk app kinte max length mai kaat sakte ho...
+        
+        for(int i=n-1;i>=0;i--){
+            int op1=INT_MIN,op2=INT_MIN,op3=INT_MIN;
+            
+            if(i+x <= n){
+                op1=1+dp[i+x];
+            }
+            
+            if(i+y <= n){
+                op2=1+dp[i+y];
+            }
+            
+            if(i+z <= n){
+                op3=1+dp[i+z];
+            }
+            
+            dp[i]=max({op1,op2,op3});
+        }
+        
+        return dp[0]<0?0:dp[0];
+    }

@@ -1,0 +1,35 @@
+Count the number of subarrays 
+
+
+long long window(vector<int>& A, long long k, int n){
+      long long sum=0;
+      
+      int i=0;
+      int j=0;
+      long long count=0;
+      
+      while(j<n){
+        //   sum += static_cast<long long>(A[j])
+          sum+=A[j];
+          if(sum<=k) count+=j-i+1;
+          
+          while(sum>k){
+            sum-=A[i];
+            i++;
+            if(sum<=k) count+=j-i+1;
+          }
+          
+          j++;
+          
+          
+          
+      }
+      
+      return count;
+  }
+  
+    long long countSubarray(int N,vector<int> A,long long L,long long R) {
+        // code here
+        
+        return window(A,R,N)-window(A,L-1,N);
+    }
