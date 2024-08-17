@@ -1,0 +1,39 @@
+ unordered_map<int,vector<int>>m;
+    int n;
+    int dp[501][501];
+    int solve(vector<int>& nums1, int i, int maxi){
+
+        if(i>=n) return 0;
+        
+
+        if(maxi != -1 and dp[i][maxi] != -1) return dp[i][maxi];
+
+        int draw=0,skip=0,maxdraw=INT_MIN;
+
+        if(m.find(nums1[i]) != m.end()){
+
+            for(auto& x:m[nums1[i]]){
+                if(maxi<x)
+                    draw=1+solve(nums1,i+1,x);
+                    maxdraw=max(maxdraw,draw);
+            }
+
+
+        }
+        skip=solve(nums1,i+1,maxi);
+        if(maxi==-1){
+            return max(maxdraw,skip);
+        }    
+
+        return dp[i][maxi]=max(maxdraw,skip);
+
+    }
+
+    int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
+        for(int i=0;i<nums2.size();i++){
+            m[nums2[i]].push_back(i);
+        }
+        n=nums1.size();
+        memset(dp,-1,sizeof(dp));
+        return solve(nums1,0,-1);
+    }
