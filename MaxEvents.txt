@@ -1,0 +1,40 @@
+#Max number of events that can be attended . . . 
+
+
+   int maxEvents(int start[], int end[], int N) {
+        // code here
+        
+        int maxi=-1;
+        vector<pair<int,int>>events;
+        set<int>s;
+        for(int i=0;i<N;i++){
+            events.push_back({start[i],end[i]});
+            maxi=max({maxi,start[i],end[i]});
+       }
+        
+        for(int i=1;i<=maxi;i++){
+            s.insert(i);
+        }
+        
+        sort(events.begin(),events.end(),[](pair<int,int>&a, pair<int,int>&b){
+            return a.second<b.second;
+        });
+        
+        // vector<int>day(maxi+1,0);
+        
+        int done=0;
+        int last_taken_day=-1;
+            for(int i=0;i<N;i++){
+                int start_day=events[i].first;
+                int end_day=events[i].second;
+                
+                auto it =s.lower_bound(start_day);
+                
+                if(it!=s.end() and *it<=end_day){
+                    done++;
+                    s.erase(it);
+                }
+
+            }
+        return done;
+    }

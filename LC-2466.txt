@@ -1,0 +1,20 @@
+ int dp[100001];
+    int MOD=1e9+7;
+    int solve(int i, int l, int h, int zero, int one){
+
+        if(i>h) return 0;
+
+        if(dp[i] != -1) return dp[i];
+
+        int addZero=0, addOne=0;
+
+        addZero= (i+zero>=l and i+zero<=h)?1+solve(i+zero,l,h,zero,one):solve(i+zero,l,h,zero,one);
+
+        addOne= (i+one>=l and i+one<=h)?1+solve(i+one,l,h,zero,one):solve(i+one,l,h,zero,one);
+
+        return dp[i]=(addZero+addOne)%MOD;
+    }
+    int countGoodStrings(int low, int high, int zero, int one) {
+        memset(dp,-1,sizeof(dp));
+       return solve(0,low,high,zero,one);
+    }
