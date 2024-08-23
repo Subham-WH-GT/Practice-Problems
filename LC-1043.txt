@@ -1,0 +1,38 @@
+ int n;
+    int K;
+    int dp[501];
+
+    int solve(vector<int>& arr, int i){
+
+        if(i>=n) return 0;
+        if(dp[i] != -1) return dp[i];
+        int sum=0;
+
+        int maxi=-1;
+        int ans=-1;
+        for(int x=i; x< min(n,i+K); x++){
+            // if(x==i){
+            //     sum=sum+arr[x]+solve(arr,x+1,arr[x+1]);
+            // }
+
+           
+                maxi=max(maxi,arr[x]);
+
+                
+                    sum=((x-i+1)*maxi)+solve(arr,x+1);
+
+                ans=max(ans,sum);
+
+        }
+
+        return dp[i]=ans;
+    }
+
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        n=arr.size();
+        K=k;
+        memset(dp,-1,sizeof(dp));
+        return solve(arr,0);
+
+        // return ans;
+    }
