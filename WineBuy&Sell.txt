@@ -1,0 +1,45 @@
+ long long int wineSelling(vector<int>& arr, int n){
+      //Code here.
+      long long int cost=0;
+      set<pair<int,int>>take;
+      set<pair<int,int>>give;
+      for(int i=0;i<n;i++){
+       if (arr[i] > 0) {  // Takes (buyers)
+        while (arr[i] > 0 && !give.empty()) {  // Matching with sellers
+            auto seller = *give.begin();
+            give.erase(give.begin());
+
+            long long int transfer = min(arr[i], seller.second);
+            cost += transfer * abs(i - seller.first);
+            arr[i] -= transfer;
+
+            if (seller.second > transfer) {
+                give.insert({seller.first, seller.second - transfer});
+            }
+        }
+
+        if (arr[i] > 0) {  // If buyer's demand is not fully met, add to take
+            take.insert({i, arr[i]});
+        }
+    } else {  // Gives (sellers)
+        while (arr[i] < 0 && !take.empty()) {  // Matching with buyers
+            auto buyer = *take.begin();
+            take.erase(take.begin());
+
+            long long int transfer = min(-arr[i], buyer.second);
+            cost += transfer * abs(i - buyer.first);
+            arr[i] += transfer;
+
+            if (buyer.second > transfer) {
+                take.insert({buyer.first, buyer.second - transfer});
+            }
+        }
+
+        if (arr[i] < 0) {  // If seller's supply is not fully met, add to give
+            give.insert({i, -arr[i]});
+        }
+    }
+  }
+  
+  return cost;
+  }
