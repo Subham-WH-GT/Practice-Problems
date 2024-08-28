@@ -1,0 +1,40 @@
+#GFG 28 Aug 
+
+ struct compare{
+      
+      bool operator()(const pair<int,int>&a, const pair<int,int>&b){
+          if(a.second != b.second) return a.second < b.second;
+          
+          return a.first > b.first;
+      }
+        
+    };
+    
+    vector<int> sortByFreq(vector<int>& arr) {
+        // Your code here
+        map<int,int>m;
+        for(int i=0;i<arr.size();i++){
+            m[arr[i]]++;
+        }
+        
+        priority_queue<pair<int,int>,vector<pair<int,int>>,compare>pq;
+        
+        for(auto &it:m){
+            int key=it.first;
+            int freq=it.second;
+            pq.push({key,freq});
+        }
+        
+        vector<int>vec;
+        
+        while(!pq.empty()){
+            
+            auto data=pq.top();
+            pq.pop();
+            int key=data.first;
+            int times=data.second;
+            vec.insert(vec.end(),times,key);
+        }
+        
+        return vec;
+    }
