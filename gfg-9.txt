@@ -1,0 +1,70 @@
+# Gold mine problem :
+
+
+ int dp[501][501];
+
+    int solve(int row, vector<vector<int>>& M, int col, int n, int m){
+        
+        if(row<0 || row>=n || col>=m) return 0;
+        
+        if(dp[row][col] != -1) return dp[row][col];
+        int du=0,r=0,dd=0;
+        
+        du=M[row][col]+solve(row-1,M,col+1,n,m);
+        r=M[row][col]+solve(row,M,col+1,n,m);
+        dd=M[row][col]+solve(row+1,M,col+1,n,m);
+        
+        return dp[row][col]=max({du,r,dd});
+    }
+
+    int maxGold(int n, int m, vector<vector<int>> M)
+    {
+        // code here
+        int ans=INT_MIN;
+        
+        memset(dp,-1,sizeof(dp));
+        for(int row=0;row<n;row++){
+            
+            ans=max(ans,solve(row,M,0,n,m));
+        }
+        
+        return ans;
+    }
+
+
+
+   **** Bottom-Up***
+
+
+ int maxGold(int n, int m, vector<vector<int>> M)
+    {
+        // code here
+        vector<vector<int>>dp(n,vector<int>(m,0));
+      
+        
+        for(int row=0;row<n;row++){
+            dp[row][0]=M[row][0];
+        }
+        
+        
+        for(int col=1;col<m;col++){
+            for(int row=0;row<n;row++){
+                int top=0,right=0,down=0;
+                    
+                    if(row-1>=0 and col-1>=0)
+                         top=dp[row-1][col-1];
+                    if(col-1>=0)    
+                         right=dp[row][col-1];
+                    if(row+1 < n and col-1 >=0)    
+                         down=dp[row+1][col-1];
+                    dp[row][col]=max({top,right,down})+M[row][col]; 
+            }
+        }
+        
+        int ans=-1;
+        for(int row=0;row<n;row++){
+            ans=max(ans,dp[row][m-1]);
+        }
+        
+        return ans;
+    }
