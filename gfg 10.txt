@@ -1,0 +1,27 @@
+  # Stock Buy Sell . . .
+
+ vector<vector<int> > stockBuySell(vector<int> arr, int n){
+        // code here
+        vector<vector<int>>ans;
+        bool buy=true;
+        int last;
+        int buyed=-1;
+        for(int i=0;i<n;i++){
+            if(buy and i+1<n and arr[i+1]>arr[i]){
+                buy=false;
+                buyed=arr[i];
+                last=i;
+            }
+            
+            else if(!buy and i+1<n and arr[i+1]<arr[i]){
+                buy=true;
+                ans.push_back({last,i});
+            }
+            
+            else if(!buy and i==n-1 and arr[i]>buyed){
+                ans.push_back({last,i});
+            }
+        }
+        
+        return ans;
+    }
