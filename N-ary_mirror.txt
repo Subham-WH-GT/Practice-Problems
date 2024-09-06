@@ -1,0 +1,103 @@
+ # Create Mirror of N-ary tree . . .
+
+
+
+#include<iostream>
+#include<vector>
+#include<queue>
+using namespace std;
+
+struct Node{
+    int key;
+    vector<Node*>childs;
+};
+
+Node* newNode(int val){
+    Node* temp=new Node;
+    temp->key=val;
+    return temp;
+}
+
+void mirror(Node* root){
+    
+    if(!root) return;
+    
+    int n=root->childs.size();
+    if(n<=1) return;
+    
+    for(int k=0;k<n;k++){
+       mirror(root->childs[k]); 
+    }
+    
+    int i=0,j=n-1;
+    while(i<j){
+        
+        // mirror(root->childs[j]);
+        
+        Node* l=root->childs[i];
+        Node* r=root->childs[j];
+        
+        Node* temp=l;
+        l=r;
+        r=temp;
+        root->childs[i]=l;
+        root->childs[j]=r;
+        i++;
+        j--;
+    }
+    
+}
+
+
+void printNodeLevelWise(Node * root)
+{
+    if (root==NULL)
+        return;
+ 
+    // Create a queue and enqueue root to it
+    queue<Node *>q;
+    q.push(root);
+ 
+    // Do level order traversal. Two loops are used
+    // to make sure that different levels are printed
+    // in different lines
+    while (!q.empty())
+    {
+        int n = q.size();
+        while (n>0)
+        {
+            // Dequeue an item from queue and print it
+            Node * p = q.front();
+            q.pop();
+            cout << p->key << " ";
+ 
+            // Enqueue all childrent of the dequeued item
+            for (int i=0; i<p->childs.size(); i++)
+                q.push(p->childs[i]);
+            n--;
+        }
+ 
+        cout << endl; // Separator between levels
+    }
+}
+
+
+int main(){
+    
+     Node *root = newNode(10);
+    (root->childs).push_back(newNode(2));
+    (root->childs).push_back(newNode(34));
+    (root->childs).push_back(newNode(56));
+    (root->childs).push_back(newNode(100));
+    (root->childs[2]->childs).push_back(newNode(1));
+    (root->childs[3]->childs).push_back(newNode(7));
+    (root->childs[3]->childs).push_back(newNode(8));
+    (root->childs[3]->childs).push_back(newNode(9));
+    
+     printNodeLevelWise(root);
+     
+     mirror(root);
+      printNodeLevelWise(root);
+      
+      return 0;
+}
