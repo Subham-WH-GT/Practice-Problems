@@ -1,0 +1,81 @@
+  # Kth largest element in N-ary tree
+
+
+
+#include<iostream>
+#include<vector>
+#include<queue>
+using namespace std;
+
+struct Node{
+  int data;
+  vector<Node*>childs;
+};
+
+Node* newNode(int val){
+    Node* temp=new Node();
+    temp->data=val;
+    return temp;
+}
+
+int solve(Node* root, int k){
+    
+    priority_queue<int,vector<int>,greater<int>>pq;
+    queue<Node*>q;
+    q.push(root);
+    
+    while(!q.empty()){
+        Node* node=q.front();
+        q.pop();
+        if(pq.size()<k){
+            pq.push(node->data);
+        }
+        else{
+            int num=pq.top();
+            if(num<node->data){
+                pq.pop();
+                pq.push(node->data);
+            }
+        }
+        
+        for(int i=0;i<node->childs.size();i++){
+            q.push(node->childs[i]);
+        }
+    }
+    return pq.top();
+}
+
+int main(){
+    
+    
+    //  Node* root = newNode(10);
+    // (root->childs).push_back(newNode(2));
+    // (root->childs).push_back(newNode(34));
+    // (root->childs).push_back(newNode(56));
+    // (root->childs).push_back(newNode(100));
+    // (root->childs[0]->childs).push_back(newNode(77));
+    // (root->childs[0]->childs).push_back(newNode(88));
+    // (root->childs[2]->childs).push_back(newNode(1));
+    // (root->childs[3]->childs).push_back(newNode(7));
+    // (root->childs[3]->childs).push_back(newNode(8));
+    // (root->childs[3]->childs).push_back(newNode(9));
+    
+    
+    Node* root=newNode(1);
+    (root->childs).push_back(newNode(2));
+    (root->childs).push_back(newNode(10));
+    (root->childs).push_back(newNode(4));
+    (root->childs).push_back(newNode(14));
+    (root->childs[0]->childs).push_back(newNode(6));
+    (root->childs[1]->childs).push_back(newNode(7));
+    (root->childs[1]->childs).push_back(newNode(8));
+    (root->childs[1]->childs).push_back(newNode(9));
+     (root->childs[1]->childs[1]->childs).push_back(newNode(13));
+      (root->childs[1]->childs[1]->childs[0]->childs).push_back(newNode(5));
+     (root->childs[2]->childs).push_back(newNode(3));  
+      (root->childs[3]->childs).push_back(newNode(11));
+       (root->childs[3]->childs).push_back(newNode(12));
+    int ans=solve(root,5);
+    cout<<ans;
+    return 0;
+}
