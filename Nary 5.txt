@@ -1,0 +1,138 @@
+# Serialise and D-serialise . . .
+
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<map>
+using namespace std;
+
+struct Node{
+  char val;
+  vector<Node*>child;
+};
+
+Node *newNode(char _val){
+    Node* temp= new Node;
+    temp->val=_val;
+    return temp;
+}
+
+map<char,vector<char>> serialise(Node* root){
+    map<char,vector<char>>serialisedTree;
+    
+    queue<Node*>q;
+    q.push(root);
+    while(!q.empty()){
+        Node* node=q.front();
+        char ch=node->val;
+        q.pop();
+        if(node->child.size()>0){
+            for(int i=0;i<node->child.size();i++){
+                serialisedTree[ch].push_back(node->child[i]->val);
+                q.push(node->child[i]);
+            }
+        }
+        
+    }
+    
+    return serialisedTree;
+}
+
+Node* deserialise(map<char, vector<char>>& serialisedTree, char rootVal){
+    
+    if (serialisedTree.empty()) return nullptr;
+    Node* root= new Node;
+    root->val=rootVal;
+    
+queue<Node*> q;
+    q.push(root);
+
+    // Rebuild the tree
+    while (!q.empty()) {
+        Node* current = q.front();
+        q.pop();
+
+        char currentVal = current->val;
+        vector<char> childrenVals = serialisedTree[currentVal];
+
+        // Create and connect children
+        for (char childVal : childrenVals) {
+            Node* childNode = new Node;
+            childNode->val=childVal;
+            current->child.push_back(childNode);
+
+            // Add the child node to the queue and map
+            q.push(childNode);
+            // nodeMap[childVal] = childNode;
+        }
+    }
+
+    return root;
+}
+
+vector<vector<char>> levelTraverse(Node* root){
+    
+    vector<vector<char>>ans;
+    queue<Node*>q;
+    q.push(root);
+    
+    while(!q.empty()){
+        vector<char>temp;
+        int n=q.size();
+        while(n--){
+            Node* node=q.front();
+            q.pop();
+            temp.push_back(node->val);
+            for(auto v:node->child){
+                q.push(v);
+            }
+        }
+        ans.push_back(temp);
+    }
+    return ans;
+}
+
+int main(){
+    
+        Node *root = newNode('A');
+    root->child.push_back(newNode('B'));
+    root->child.push_back(newNode('C'));
+    root->child.push_back(newNode('D'));
+    root->child[0]->child.push_back(newNode('E'));
+    root->child[0]->child.push_back(newNode('F'));
+    root->child[2]->child.push_back(newNode('G'));
+    root->child[2]->child.push_back(newNode('H'));
+    root->child[2]->child.push_back(newNode('I'));
+    root->child[2]->child.push_back(newNode('J'));
+    root->child[0]->child[1]->child.push_back(newNode('K'));
+    
+     vector<vector<char>>ans=levelTraverse(root);
+    
+    for(auto &v:ans){
+        for(char x:v){
+            cout<<x<<" ";
+        }
+        cout<<endl;
+    }
+    
+    map<char,vector<char>>ser=serialise(root);
+    
+    for(auto& data:ser){
+        cout<<"key: "<<data.first<<" ";
+        for(auto c:data.second){
+            cout<<c;
+        }
+        cout<<endl;
+    }
+    
+    Node* newroot=deserialise(ser,'A');
+    
+     vector<vector<char>>ans2=levelTraverse(newroot);
+    
+    for(auto &v:ans2){
+        for(char x:v){
+            cout<<x<<" ";
+        }
+        cout<<endl;
+    }
+}
