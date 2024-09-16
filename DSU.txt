@@ -1,0 +1,68 @@
+# Check if given edge is a bridge or not  
+
+vector<int>parent;
+    vector<int>rank;
+    
+    void Union(int u, int v){
+        
+        int u_parent=find(u);
+        int v_parent=find(v);
+        
+        if(u_parent==v_parent) return;
+        
+        if(rank[u_parent]>rank[v_parent]){
+            parent[v_parent]=u_parent;
+        }
+        
+        else if(rank[v_parent]>rank[u_parent]){
+            parent[u_parent]=v_parent;
+        }
+        
+        else{
+            
+            parent[u_parent]=v_parent;
+            rank[v_parent]++;
+        }
+        
+    }
+    
+    int find(int x){
+        
+        if(x==parent[x]) return x;
+        
+        return parent[x]=find(parent[x]);
+    }
+    
+   
+    int isBridge(int V, vector<int> adj[], int c, int d) 
+    {
+        // Code here
+        parent.resize(V);
+        rank.resize(V,1);
+        
+        for(int i=0;i<V;i++){
+            parent[i]=i;
+        }
+        
+        for(int u=0;u<V;u++){
+            for(auto& v: adj[u]){
+                
+                if((u==c and v==d) || (u==d and c==v)) continue;
+                
+                else Union(u,v);
+            }
+        }
+        
+        // for(int i=1;i<V;i++){
+        //     if(parent[i]!=parent[i-1]) return true;
+        // }
+        
+         if (find(c) != find(d)) {
+        // c and d are disconnected, so the edge is a bridge
+        return true;
+    }
+
+        
+        return false;
+        
+    }

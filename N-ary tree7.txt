@@ -1,0 +1,83 @@
+# Check two trees are isomorphic or not 
+
+
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+struct Node{
+  int data;
+  vector<Node*>childs;
+  
+  Node(int val){
+      data=val;
+  }
+};
+
+bool iso(Node* root1, Node* root2){
+    
+    if(!root1 and !root2) return true;
+    
+    if(!root1 || !root2) return false;
+    
+    if(root1->data !=root2->data) return false;
+    
+    if(root1->childs.size() != root2->childs.size()) return false;
+    
+    bool visited[root2->childs.size()]={false};
+    
+    for(Node* child1:root1->childs){
+        bool matchFound=false;
+        for(auto i=0;i<root2->childs.size();i++){
+            if(!visited[i] and iso(child1,root2->childs[i])){
+                matchFound=true;
+                visited[i]=true;
+                break;
+            }
+        }
+        if(!matchFound) return false;
+    }
+    return true;
+}
+
+int main(){
+    
+    Node* root1 = new Node(10);
+    
+    Node* child1_1 = new Node(20);
+    Node* child1_2 = new Node(30);
+    
+    Node* child1_1_1 = new Node(90);
+    Node* child1_1_2 = new Node(50);
+    child1_1->childs.push_back(child1_1_1);
+    child1_1->childs.push_back(child1_1_2);
+    
+    Node* child1_2_1 = new Node(60);
+    child1_2->childs.push_back(child1_2_1);
+    
+    root1->childs.push_back(child1_1);
+    root1->childs.push_back(child1_2);
+    
+    // Create Tree 2
+    Node* root2 = new Node(10);
+    
+    Node* child2_1 = new Node(30);
+    Node* child2_2 = new Node(20);
+    
+    Node* child2_1_1 = new Node(60);
+    child2_1->childs.push_back(child2_1_1);
+    
+    Node* child2_2_1 = new Node(50);
+    Node* child2_2_2 = new Node(90);
+    child2_2->childs.push_back(child2_2_1);
+    child2_2->childs.push_back(child2_2_2);
+    
+    root2->childs.push_back(child2_1);
+    root2->childs.push_back(child2_2);
+    
+    if(iso(root1,root2)) cout<<"YES"<<" ";
+    else cout<<"NO"<<" ";
+    
+    return 0;
+}
